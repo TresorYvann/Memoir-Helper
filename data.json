@@ -1,0 +1,448 @@
+{
+  "projects": [
+    {
+      "id": "proj_1779793903544",
+      "name": "Mon Mémoire de Fin d'Études (R&D)",
+      "type": "rd",
+      "targetWords": 15000,
+      "deadline": "",
+      "sections": [
+        {
+          "id": "intro",
+          "title": "1. Introduction générale",
+          "targetWords": 1000,
+          "draft": "",
+          "status": "todo",
+          "checklist": [
+            {
+              "id": "c1",
+              "label": "Définir le contexte général et industriel",
+              "checked": false
+            },
+            {
+              "id": "c2",
+              "label": "Formuler la problématique technique",
+              "checked": false
+            },
+            {
+              "id": "c3",
+              "label": "Énoncer les objectifs du projet",
+              "checked": false
+            },
+            {
+              "id": "c4",
+              "label": "Présenter la structure du document (annonce du plan)",
+              "checked": false
+            }
+          ],
+          "guidelines": "<p>L'introduction doit situer le sujet dans son contexte professionnel ou de recherche. Elle expose clairement les enjeux, le problème auquel vous faites face, et la démarche générale que vous allez suivre pour y répondre.</p>",
+          "words": 0
+        },
+        {
+          "id": "state_of_art",
+          "title": "2. État de l'art & Choix techniques",
+          "targetWords": 2500,
+          "draft": "",
+          "status": "todo",
+          "checklist": [
+            {
+              "id": "c5",
+              "label": "Rechercher les solutions existantes (littérature/marché)",
+              "checked": false
+            },
+            {
+              "id": "c6",
+              "label": "Comparer les technologies (avantages / inconvénients)",
+              "checked": false
+            },
+            {
+              "id": "c7",
+              "label": "Justifier scientifiquement les choix finaux",
+              "checked": false
+            },
+            {
+              "id": "c8",
+              "label": "Identifier les verrous technologiques à lever",
+              "checked": false
+            }
+          ],
+          "guidelines": "<p>Cette section démontre votre rigueur d'ingénieur. Vous devez analyser la littérature, la documentation technique, comparer les solutions disponibles et justifier pourquoi vous avez choisi une technologie ou méthode plutôt qu'une autre.</p>",
+          "words": 0
+        },
+        {
+          "id": "requirements",
+          "title": "3. Analyse des besoins & Spécifications",
+          "targetWords": 2000,
+          "draft": "",
+          "status": "todo",
+          "checklist": [
+            {
+              "id": "c9",
+              "label": "Lister les besoins fonctionnels",
+              "checked": false
+            },
+            {
+              "id": "c10",
+              "label": "Définir les besoins non-fonctionnels (performance, sécurité...)",
+              "checked": false
+            },
+            {
+              "id": "c11",
+              "label": "Présenter les cas d'utilisation (UML - Use Cases)",
+              "checked": false
+            },
+            {
+              "id": "c12",
+              "label": "Établir les critères d'acceptation",
+              "checked": false
+            }
+          ],
+          "guidelines": "<p>Détaillez le cahier des charges. Quels sont les besoins de l'utilisateur final ? Quelles sont les contraintes techniques, budgétaires ou réglementaires ? Utilisez des diagrammes s'ils facilitent la compréhension.</p>",
+          "words": 0
+        },
+        {
+          "id": "conception",
+          "title": "4. Conception & Architecture de la solution",
+          "targetWords": 3000,
+          "draft": "",
+          "status": "todo",
+          "checklist": [
+            {
+              "id": "c13",
+              "label": "Schématiser l'architecture globale du système",
+              "checked": false
+            },
+            {
+              "id": "c14",
+              "label": "Décrire le modèle de données (MCD / diagramme de classes)",
+              "checked": false
+            },
+            {
+              "id": "c15",
+              "label": "Détailler le fonctionnement des interfaces (APIs, UI)",
+              "checked": false
+            },
+            {
+              "id": "c16",
+              "label": "Expliquer les choix de conception algorithmique",
+              "checked": false
+            }
+          ],
+          "guidelines": "<p>Présentez la structure interne de votre solution. C'est le cœur conceptuel de votre travail d'ingénieur. Expliquez comment les modules interagissent entre eux, comment les données circulent, et justifiez vos choix architecturaux (ex: MVC, microservices, cloud...).</p>",
+          "words": 0
+        },
+        {
+          "id": "implementation",
+          "title": "5. Réalisation & Implémentation",
+          "targetWords": 3000,
+          "draft": "",
+          "status": "todo",
+          "checklist": [
+            {
+              "id": "c17",
+              "label": "Décrire les phases clés du développement",
+              "checked": false
+            },
+            {
+              "id": "c18",
+              "label": "Présenter des extraits de code critiques ou configurations clés",
+              "checked": false
+            },
+            {
+              "id": "c19",
+              "label": "Expliquer la résolution des problèmes complexes rencontrés",
+              "checked": false
+            },
+            {
+              "id": "c20",
+              "label": "Présenter l'interface finale (captures d'écran à l'appui)",
+              "checked": false
+            }
+          ],
+          "guidelines": "<p>Décrivez concrètement comment vous avez mis en œuvre la conception. Évitez de lister des détails de code triviaux ; concentrez-vous sur l'essentiel, les algorithmes spécifiques, les configurations complexes et l'intégration.</p>",
+          "words": 0
+        },
+        {
+          "id": "validation",
+          "title": "6. Validation & Évaluation des résultats",
+          "targetWords": 2000,
+          "draft": "",
+          "status": "todo",
+          "checklist": [
+            {
+              "id": "c21",
+              "label": "Détailler le plan de tests (unitaires, intégration, charge)",
+              "checked": false
+            },
+            {
+              "id": "c22",
+              "label": "Présenter les métriques de performance obtenues",
+              "checked": false
+            },
+            {
+              "id": "c23",
+              "label": "Comparer les résultats réels aux spécifications de départ",
+              "checked": false
+            },
+            {
+              "id": "c24",
+              "label": "Recueillir et analyser les retours utilisateurs",
+              "checked": false
+            }
+          ],
+          "guidelines": "<p>Apportez la preuve que votre système fonctionne et résout la problématique initiale. Présentez des graphiques de performance, des résultats de tests de charge, des taux de couverture de code, ou des évaluations d'ergonomie.</p>",
+          "words": 0
+        },
+        {
+          "id": "conclusion",
+          "title": "7. Conclusion générale & Perspectives",
+          "targetWords": 1500,
+          "draft": "",
+          "status": "todo",
+          "checklist": [
+            {
+              "id": "c25",
+              "label": "Faire la synthèse du travail accompli",
+              "checked": false
+            },
+            {
+              "id": "c26",
+              "label": "Discuter les limites actuelles de la solution",
+              "checked": false
+            },
+            {
+              "id": "c27",
+              "label": "Proposer des voies d'amélioration futures",
+              "checked": false
+            },
+            {
+              "id": "c28",
+              "label": "Formuler un bilan personnel et professionnel",
+              "checked": false
+            }
+          ],
+          "guidelines": "<p>Résumez vos contributions. Prenez du recul sur vos résultats en analysant objectivement les limites du projet. Enfin, ouvrez sur les perspectives d'évolution de la solution et partagez votre retour d'expérience en tant que futur ingénieur.</p>",
+          "words": 0
+        }
+      ],
+      "acronyms": [
+        {
+          "term": "API",
+          "definition": "Application Programming Interface",
+          "desc": "Interface de programmation pour la communication entre systèmes."
+        },
+        {
+          "term": "MVC",
+          "definition": "Model-View-Controller",
+          "desc": "Patron d'architecture logicielle séparant les données, la logique et l'affichage."
+        },
+        {
+          "term": "UML",
+          "definition": "Unified Modeling Language",
+          "desc": "Langage de modélisation graphique standardisé pour le génie logiciel."
+        }
+      ],
+      "references": [
+        {
+          "id": "ref_1",
+          "key": "sommerville2020",
+          "type": "book",
+          "title": "Software Engineering (10th Edition)",
+          "author": "I. Sommerville",
+          "year": 2020,
+          "publisher": "Pearson",
+          "city": "Boston"
+        },
+        {
+          "id": "ref_2",
+          "key": "fielding2000",
+          "type": "thesis",
+          "title": "Architectural Styles and the Design of Network-based Software Architectures",
+          "author": "R. Fielding",
+          "year": 2000,
+          "institution": "University of California, Irvine"
+        }
+      ]
+    },
+    {
+      "id": "proj_1779793978804",
+      "name": "D.A.G",
+      "type": "academic",
+      "targetWords": 15000,
+      "deadline": "2026-05-31",
+      "sections": [
+        {
+          "id": "intro",
+          "title": "1. Introduction",
+          "targetWords": 1000,
+          "draft": "",
+          "status": "todo",
+          "checklist": [
+            {
+              "id": "ca1",
+              "label": "Contexte scientifique",
+              "checked": false
+            },
+            {
+              "id": "ca2",
+              "label": "Question de recherche",
+              "checked": false
+            },
+            {
+              "id": "ca3",
+              "label": "Hypothèses de travail",
+              "checked": false
+            },
+            {
+              "id": "ca4",
+              "label": "Annonce du plan",
+              "checked": false
+            }
+          ],
+          "guidelines": "<p>Introduisez le domaine scientifique et le sujet précis de recherche. Définissez la problématique de manière formelle et émettez des hypothèses claires.</p>",
+          "words": 0
+        },
+        {
+          "id": "literature",
+          "title": "2. Revue de la littérature",
+          "targetWords": 3500,
+          "draft": "",
+          "status": "todo",
+          "checklist": [
+            {
+              "id": "ca5",
+              "label": "Synthèse des travaux antérieurs",
+              "checked": false
+            },
+            {
+              "id": "ca6",
+              "label": "Identification des manques de la recherche actuelle",
+              "checked": false
+            },
+            {
+              "id": "ca7",
+              "label": "Positionnement de vos travaux",
+              "checked": false
+            }
+          ],
+          "guidelines": "<p>Présentez l'état de la science sur le sujet. Référencez rigoureusement les articles fondateurs et les avancées récentes. Mettez en évidence les limites des approches actuelles que vous cherchez à dépasser.</p>",
+          "words": 0
+        },
+        {
+          "id": "methodology",
+          "title": "3. Méthodologie & Approche proposée",
+          "targetWords": 3000,
+          "draft": "",
+          "status": "todo",
+          "checklist": [
+            {
+              "id": "ca8",
+              "label": "Modélisation formelle / théorique",
+              "checked": false
+            },
+            {
+              "id": "ca9",
+              "label": "Protocole expérimental détaillé",
+              "checked": false
+            },
+            {
+              "id": "ca10",
+              "label": "Description du jeu de données ou des instruments",
+              "checked": false
+            }
+          ],
+          "guidelines": "<p>Décrivez précisément votre démarche scientifique, vos modèles mathématiques ou théoriques. Votre méthodologie doit être assez détaillée pour que vos expériences soient reproductibles par d'autres chercheurs.</p>",
+          "words": 0
+        },
+        {
+          "id": "experiments",
+          "title": "4. Expérimentation & Résultats",
+          "targetWords": 3500,
+          "draft": "",
+          "status": "todo",
+          "checklist": [
+            {
+              "id": "ca11",
+              "label": "Présentation des données brutes récoltées",
+              "checked": false
+            },
+            {
+              "id": "ca12",
+              "label": "Graphiques et tableaux de résultats clairs",
+              "checked": false
+            },
+            {
+              "id": "ca13",
+              "label": "Validation statistique des résultats",
+              "checked": false
+            }
+          ],
+          "guidelines": "<p>Exposez les faits. Présentez vos résultats sous forme de courbes, de graphiques ou de tableaux. Évitez d'interpréter les résultats dans cette section, présentez-les simplement de manière claire et objective.</p>",
+          "words": 0
+        },
+        {
+          "id": "discussion",
+          "title": "5. Discussion & Analyse critique",
+          "targetWords": 2500,
+          "draft": "",
+          "status": "todo",
+          "checklist": [
+            {
+              "id": "ca14",
+              "label": "Interprétation des résultats obtenus",
+              "checked": false
+            },
+            {
+              "id": "ca15",
+              "label": "Vérification ou infirmation des hypothèses",
+              "checked": false
+            },
+            {
+              "id": "ca16",
+              "label": "Comparaison avec les travaux de l'état de l'art",
+              "checked": false
+            },
+            {
+              "id": "ca17",
+              "label": "Discussion des biais ou sources d'erreurs",
+              "checked": false
+            }
+          ],
+          "guidelines": "<p>C'est ici que vous donnez du sens à vos résultats. Expliquez les écarts éventuels par rapport à vos hypothèses. Comparez vos résultats à ceux de la littérature. Soyez honnête sur les limites de vos données ou méthodes.</p>",
+          "words": 0
+        },
+        {
+          "id": "conclusion",
+          "title": "6. Conclusion & Perspectives",
+          "targetWords": 1500,
+          "draft": "",
+          "status": "todo",
+          "checklist": [
+            {
+              "id": "ca18",
+              "label": "Synthèse des conclusions majeures",
+              "checked": false
+            },
+            {
+              "id": "ca19",
+              "label": "Contributions scientifiques apportées",
+              "checked": false
+            },
+            {
+              "id": "ca20",
+              "label": "Pistes pour de futurs travaux de recherche",
+              "checked": false
+            }
+          ],
+          "guidelines": "<p>Résumez les découvertes clés et leur portée. Ouvrez sur des questions scientifiques qui restent en suspens et méritent d'être étudiées par la suite.</p>",
+          "words": 0
+        }
+      ],
+      "acronyms": [],
+      "references": []
+    }
+  ],
+  "activeProjectId": "proj_1779793978804",
+  "activeSectionId": "intro",
+  "activeCitationStyle": "apa"
+}

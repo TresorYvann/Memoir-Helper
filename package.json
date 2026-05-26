@@ -1,0 +1,17 @@
+{
+  "name": "memoire-helper",
+  "version": "1.0.0",
+  "description": "Assistant de redaction de memoire de fin d'etudes (cycle ingenieur) avec serveur de stockage local",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": [
+    "memoire",
+    "ingenieur",
+    "thesis",
+    "helper"
+  ],
+  "author": "Eben-ezer",
+  "license": "MIT"
+}

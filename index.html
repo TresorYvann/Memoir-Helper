@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mémoire Helper - Assistant de Rédaction pour Cycle Ingénieur</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Main Style -->
+    <link rel="stylesheet" href="style.css">
+    <!-- Application Logic -->
+    <script src="app.js" defer></script>
+</head>
+<body class="dark-theme">
+    <div class="app-container">
+        
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class="fa-solid fa-graduation-cap logo-icon"></i>
+                    <div>
+                        <h1>Mémoire Helper</h1>
+                        <span class="version">Cycle Ingénieur</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project Selector & Management -->
+            <div class="project-selector-container">
+                <label for="project-select"><i class="fa-solid fa-folder-open"></i> Projet actif</label>
+                <div class="select-wrapper">
+                    <select id="project-select">
+                        <!-- Loaded dynamically -->
+                    </select>
+                </div>
+                <div class="project-actions">
+                    <button id="btn-new-project" class="btn btn-secondary btn-sm" title="Nouveau projet">
+                        <i class="fa-solid fa-plus"></i> Nouveau
+                    </button>
+                    <button id="btn-delete-project" class="btn btn-danger-outline btn-sm" title="Supprimer le projet">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                </div>
+            </div>
+
+            <nav class="sidebar-nav">
+                <ul>
+                    <li class="nav-item active" data-tab="dashboard">
+                        <a href="#dashboard">
+                            <i class="fa-solid fa-chart-line"></i>
+                            <span>Tableau de bord</span>
+                        </a>
+                    </li>
+                    <li class="nav-item" data-tab="workspace">
+                        <a href="#workspace">
+                            <i class="fa-solid fa-pen-nib"></i>
+                            <span>Rédaction & Plan</span>
+                        </a>
+                    </li>
+                    <li class="nav-item" data-tab="glossary">
+                        <a href="#glossary">
+                            <i class="fa-solid fa-book-open"></i>
+                            <span>Glossaire & Sigles</span>
+                        </a>
+                    </li>
+                    <li class="nav-item" data-tab="bibliography">
+                        <a href="#bibliography">
+                            <i class="fa-solid fa-quote-right"></i>
+                            <span>Bibliographie</span>
+                        </a>
+                    </li>
+                    <li class="nav-item" data-tab="toolbox">
+                        <a href="#toolbox">
+                            <i class="fa-solid fa-screwdriver-wrench"></i>
+                            <span>Boîte à outils</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="data-actions">
+                    <button id="btn-export-json" class="btn btn-outline btn-block" title="Exporter toutes les données au format JSON">
+                        <i class="fa-solid fa-download"></i> Exporter JSON
+                    </button>
+                    <button id="btn-import-json" class="btn btn-outline btn-block" title="Importer des données depuis un fichier JSON">
+                        <i class="fa-solid fa-upload"></i> Importer JSON
+                    </button>
+                    <input type="file" id="import-file-input" style="display: none;" accept=".json">
+                </div>
+                <div class="save-status" id="save-status">
+                    <i class="fa-solid fa-cloud-arrow-up"></i> Données sauvegardées localement
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            
+            <!-- Top Bar -->
+            <header class="top-bar">
+                <div class="page-title">
+                    <h2 id="current-tab-title">Tableau de bord</h2>
+                    <p id="current-project-name" class="project-subtitle">Chargement du projet...</p>
+                </div>
+                <div class="top-bar-actions">
+                    <div class="pomodoro-compact" id="pomodoro-compact">
+                        <i class="fa-solid fa-clock"></i>
+                        <span id="pomo-time">25:00</span>
+                        <button id="btn-pomo-play" class="btn-icon" title="Démarrer focus"><i class="fa-solid fa-play"></i></button>
+                    </div>
+                    <button id="theme-toggle" class="btn-icon" title="Changer le thème">
+                        <i class="fa-solid fa-sun icon-sun"></i>
+                        <i class="fa-solid fa-moon icon-moon"></i>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Tabs Content -->
+            <div class="tab-viewport">
+
+                <!-- 1. DASHBOARD TAB -->
+                <section id="tab-dashboard" class="tab-panel active">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon icon-blue"><i class="fa-solid fa-keyboard"></i></div>
+                            <div class="stat-info">
+                                <span class="stat-label">Mots rédigés</span>
+                                <span class="stat-value" id="stat-words">0 / 15 000</span>
+                                <div class="progress-bar-container">
+                                    <div class="progress-bar" id="progress-words-bar" style="width: 0%"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon icon-green"><i class="fa-solid fa-percent"></i></div>
+                            <div class="stat-info">
+                                <span class="stat-label">Progression sections</span>
+                                <span class="stat-value" id="stat-completion">0%</span>
+                                <div class="progress-bar-container">
+                                    <div class="progress-bar" id="progress-sections-bar" style="width: 0%"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon icon-orange"><i class="fa-solid fa-calendar-days"></i></div>
+                            <div class="stat-info">
+                                <span class="stat-label">Jours restants</span>
+                                <span class="stat-value" id="stat-days-left">--</span>
+                                <span class="stat-subtext" id="stat-deadline-date">Rendu : non configuré</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon icon-purple"><i class="fa-solid fa-quote-left"></i></div>
+                            <div class="stat-info">
+                                <span class="stat-label">Références & Glossaire</span>
+                                <span class="stat-value" id="stat-ref-glo">0 Réf / 0 Sigles</span>
+                                <span class="stat-subtext">Prêts pour citation</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-details">
+                        <!-- Left Panel: Deadlines & Settings -->
+                        <div class="glass-panel dashboard-settings">
+                            <h3><i class="fa-solid fa-sliders"></i> Configuration du rapport</h3>
+                            <div class="form-group">
+                                <label for="config-title">Titre du mémoire</label>
+                                <input type="text" id="config-title" placeholder="Ex: Conception d'une infrastructure cloud scalable...">
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="config-target-words">Objectif de mots</label>
+                                    <input type="number" id="config-target-words" value="15000">
+                                </div>
+                                <div class="form-group">
+                                    <label for="config-deadline">Date de rendu</label>
+                                    <input type="date" id="config-deadline">
+                                </div>
+                            </div>
+                            <button id="btn-save-config" class="btn btn-primary btn-block">
+                                <i class="fa-solid fa-save"></i> Enregistrer les paramètres
+                            </button>
+
+                            <!-- Pomodoro Detailed -->
+                            <div class="pomodoro-widget-card">
+                                <h4><i class="fa-solid fa-brain"></i> Session de Focus (Pomodoro)</h4>
+                                <div class="pomo-display">
+                                    <span id="pomo-main-time">25:00</span>
+                                    <span id="pomo-status" class="badge">Prêt</span>
+                                </div>
+                                <div class="pomo-controls">
+                                    <button id="btn-pomo-start" class="btn btn-primary"><i class="fa-solid fa-play"></i> Démarrer</button>
+                                    <button id="btn-pomo-pause" class="btn btn-outline" disabled><i class="fa-solid fa-pause"></i> Pause</button>
+                                    <button id="btn-pomo-reset" class="btn btn-secondary-outline"><i class="fa-solid fa-arrows-rotate"></i> Reset</button>
+                                </div>
+                                <div class="pomo-modes">
+                                    <button class="btn btn-xs btn-outline active" data-time="1500">25 min (Focus)</button>
+                                    <button class="btn btn-xs btn-outline" data-time="300">5 min (Pause)</button>
+                                    <button class="btn btn-xs btn-outline" data-time="900">15 min (Pause longue)</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right Panel: Gantt / Timeline of Milestones -->
+                        <div class="glass-panel dashboard-timeline">
+                            <h3><i class="fa-solid fa-route"></i> Jalons de rédaction (Gantt)</h3>
+                            <div class="gantt-chart" id="gantt-chart">
+                                <!-- Generated Dynamically -->
+                            </div>
+                            <div class="advice-card mt-3">
+                                <h4>💡 Conseil de l'ingénieur</h4>
+                                <p>Un mémoire d'ingénieur doit être précis et objectif. Consacrez 40% de votre rédaction à la conception et la validation de votre solution, et 20% à l'évaluation critique des résultats.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 2. WORKSPACE TAB -->
+                <section id="tab-workspace" class="tab-panel">
+                    <div class="workspace-layout">
+                        
+                        <!-- Left pane: Document Outline -->
+                        <div class="outline-pane glass-panel">
+                            <div class="pane-header">
+                                <h3><i class="fa-solid fa-list-ol"></i> Sommaire</h3>
+                                <button id="btn-reset-outline" class="btn-icon" title="Réinitialiser le plan"><i class="fa-solid fa-rotate-left"></i></button>
+                            </div>
+                            <div class="outline-list" id="outline-list">
+                                <!-- Populated dynamically -->
+                            </div>
+                        </div>
+
+                        <!-- Center pane: Editor -->
+                        <div class="editor-pane glass-panel">
+                            <div class="editor-header">
+                                <div class="editor-section-info">
+                                    <h3 id="editor-section-title">Sélectionnez une section</h3>
+                                    <span id="editor-section-words" class="badge">0 mots</span>
+                                </div>
+                                <div class="editor-actions">
+                                    <label for="section-status-select"><i class="fa-solid fa-circle-info"></i> Statut : </label>
+                                    <div class="select-wrapper select-sm inline-select">
+                                        <select id="section-status-select">
+                                            <option value="todo">À faire</option>
+                                            <option value="in_progress">En cours</option>
+                                            <option value="review">En relecture</option>
+                                            <option value="done">Terminé</option>
+                                        </select>
+                                    </div>
+                                    <button id="btn-toggle-preview" class="btn btn-secondary btn-sm" title="Aperçu Markdown">
+                                        <i class="fa-solid fa-eye"></i> Aperçu
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="editor-input-area" id="editor-input-area">
+                                <textarea id="section-textarea" placeholder="Rédigez vos notes, plans détaillés ou brouillons pour cette section en Markdown ici..."></textarea>
+                                <div id="section-preview" class="markdown-body" style="display: none;"></div>
+                            </div>
+                            
+                            <div class="editor-footer">
+                                <span class="editor-tip">Sauvegarde automatique active. Formats supportés : Markdown, LaTeX pour formules (ex: $$E=mc^2$$)</span>
+                            </div>
+                        </div>
+
+                        <!-- Right pane: Advice & Checklist -->
+                        <div class="advice-pane glass-panel">
+                            <div class="pane-header">
+                                <h3><i class="fa-solid fa-clipboard-question"></i> Guide & Checklist</h3>
+                            </div>
+                            
+                            <div class="advice-content">
+                                <div class="checklist-section">
+                                    <h4>Checklist de la section</h4>
+                                    <ul class="checklist-items" id="section-checklist">
+                                        <!-- Loaded dynamically -->
+                                    </ul>
+                                </div>
+                                
+                                <div class="academic-guidelines">
+                                    <h4>Conseils de rédaction</h4>
+                                    <div class="guidelines-card" id="section-guidelines">
+                                        <!-- Loaded dynamically -->
+                                    </div>
+                                </div>
+
+                                <div class="acronyms-alert-card" id="dangling-acronyms-alert">
+                                    <h4>🔍 Sigles détectés dans ce texte</h4>
+                                    <div id="dangling-acronyms-list" class="tags-container">
+                                        <!-- Dynamically generated tags -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+
+                <!-- 3. GLOSSARY TAB -->
+                <section id="tab-glossary" class="tab-panel">
+                    <div class="dual-layout">
+                        <!-- Left: Form to Add Acronym -->
+                        <div class="glass-panel dual-left">
+                            <h3><i class="fa-solid fa-plus"></i> Ajouter un sigle / acronyme</h3>
+                            <form id="acronym-form" class="standard-form">
+                                <div class="form-group">
+                                    <label for="acro-term">Sigle / Acronyme *</label>
+                                    <input type="text" id="acro-term" placeholder="Ex: API, REST, SQL, R&D" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="acro-definition">Signification complète (Français et/ou Anglais) *</label>
+                                    <input type="text" id="acro-definition" placeholder="Ex: Application Programming Interface (Interface de programmation d'application)" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="acro-desc">Description / Utilisation (Optionnel)</label>
+                                    <textarea id="acro-desc" placeholder="Décrivez brièvement le rôle de ce sigle dans votre mémoire."></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-block">
+                                    <i class="fa-solid fa-save"></i> Enregistrer le sigle
+                                </button>
+                            </form>
+                        </div>
+
+                        <!-- Right: List of Acronyms & Finder -->
+                        <div class="glass-panel dual-right">
+                            <div class="pane-header">
+                                <h3><i class="fa-solid fa-list"></i> Liste des sigles (<span id="acronym-count">0</span>)</h3>
+                                <div class="search-bar">
+                                    <i class="fa-solid fa-magnifying-glass"></i>
+                                    <input type="text" id="search-acronym" placeholder="Rechercher un sigle...">
+                                </div>
+                            </div>
+                            <div class="table-container">
+                                <table id="acronym-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Sigle</th>
+                                            <th>Signification / Description</th>
+                                            <th class="text-right">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="acronym-tbody">
+                                        <!-- Generated Dynamically -->
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                            <div class="acronym-scanning-box mt-3">
+                                <h4><i class="fa-solid fa-wand-magic-sparkles"></i> Détecteur d'acronymes oubliés</h4>
+                                <p>L'application analyse en temps réel toutes vos sections de rédaction et recherche les mots entièrement en majuscules (ex: XML, JSON) qui ne figurent pas encore dans votre glossaire.</p>
+                                <div class="missing-acronyms-found">
+                                    <h5>Acronymes non définis détectés :</h5>
+                                    <div id="missing-acronyms-tags" class="tags-container">
+                                        <!-- Dynamically generated warning tags -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 4. BIBLIOGRAPHY TAB -->
+                <section id="tab-bibliography" class="tab-panel">
+                    <div class="sub-nav-container mb-3">
+                        <button class="btn btn-sm btn-primary active-sub-tab" id="btn-sub-bib-local">
+                            <i class="fa-solid fa-bookmark"></i> Mes Références
+                        </button>
+                        <button class="btn btn-sm btn-outline" id="btn-sub-bib-search">
+                            <i class="fa-solid fa-globe"></i> Recherche en Ligne
+                        </button>
+                    </div>
+
+                    <!-- 4.1 Local Bibliography Layout -->
+                    <div class="dual-layout" id="bib-local-layout">
+                        <!-- Left: Form to Add Reference -->
+                        <div class="glass-panel dual-left">
+                            <h3><i class="fa-solid fa-folder-plus"></i> Ajouter une référence</h3>
+                            <div class="form-group">
+                                <label for="ref-type">Type de source</label>
+                                <div class="select-wrapper">
+                                    <select id="ref-type">
+                                        <option value="web">Site Web / Article de blog</option>
+                                        <option value="book">Livre / Ouvrage</option>
+                                        <option value="article">Article scientifique / Journal</option>
+                                        <option value="thesis">Thèse / Rapport de stage</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <form id="ref-form" class="standard-form">
+                                <div class="form-group">
+                                    <label for="ref-title">Titre *</label>
+                                    <input type="text" id="ref-title" placeholder="Titre de la source ou de l'article" required>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="ref-author">Auteur(s) *</label>
+                                        <input type="text" id="ref-author" placeholder="Ex: J. Dupont, A. Smith" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="ref-year">Année *</label>
+                                        <input type="number" id="ref-year" placeholder="Ex: 2024" required>
+                                    </div>
+                                </div>
+
+                                <!-- Conditional fields for Web -->
+                                <div class="conditional-fields" id="fields-web">
+                                    <div class="form-group">
+                                        <label for="ref-url">URL / Adresse Web</label>
+                                        <input type="url" id="ref-url" placeholder="https://example.com/article">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="ref-publisher-web">Organisme / Éditeur Web</label>
+                                        <input type="text" id="ref-publisher-web" placeholder="Ex: MDN Web Docs, Medium">
+                                    </div>
+                                </div>
+
+                                <!-- Conditional fields for Book -->
+                                <div class="conditional-fields" id="fields-book" style="display:none;">
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="ref-publisher">Éditeur / Maison d'édition</label>
+                                            <input type="text" id="ref-publisher" placeholder="Ex: Eyrolles, Dunod">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="ref-city">Ville de publication</label>
+                                            <input type="text" id="ref-city" placeholder="Ex: Paris">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Conditional fields for Article -->
+                                <div class="conditional-fields" id="fields-article" style="display:none;">
+                                    <div class="form-group">
+                                        <label for="ref-journal">Journal / Revue académique</label>
+                                        <input type="text" id="ref-journal" placeholder="Ex: IEEE Transactions on Cloud Computing">
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="ref-volume">Volume / Numéro</label>
+                                            <input type="text" id="ref-volume" placeholder="Ex: Vol. 12, No. 4">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="ref-pages">Pages</label>
+                                            <input type="text" id="ref-pages" placeholder="Ex: 145-152">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Conditional fields for Thesis -->
+                                <div class="conditional-fields" id="fields-thesis" style="display:none;">
+                                    <div class="form-group">
+                                        <label for="ref-institution">Université / École d'Ingénieur</label>
+                                        <input type="text" id="ref-institution" placeholder="Ex: INSA Lyon, Polytechnique Paris">
+                                    </div>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary btn-block">
+                                    <i class="fa-solid fa-save"></i> Enregistrer la référence
+                                </button>
+                            </form>
+                        </div>
+
+                        <!-- Right: List of References -->
+                        <div class="glass-panel dual-right">
+                            <div class="pane-header">
+                                <h3><i class="fa-solid fa-list-check"></i> Sources & Références (<span id="ref-count">0</span>)</h3>
+                                <div class="search-bar">
+                                    <i class="fa-solid fa-magnifying-glass"></i>
+                                    <input type="text" id="search-ref" placeholder="Rechercher une source...">
+                                </div>
+                            </div>
+
+                            <div class="ref-style-selector">
+                                <label><i class="fa-solid fa-sliders"></i> Style de citation actif :</label>
+                                <div class="btn-group">
+                                    <button class="btn btn-xs active" id="btn-style-ieee">IEEE [1]</button>
+                                    <button class="btn btn-xs" id="btn-style-apa">APA (Auteur, Année)</button>
+                                </div>
+                            </div>
+
+                            <div class="references-list" id="references-list">
+                                <!-- Dynamically generated reference list -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 4.2 Online Scientific Search Layout -->
+                    <div class="glass-panel search-layout-panel" id="bib-search-layout" style="display: none;">
+                        <div class="scientific-search-header-row mb-3">
+                            <div class="scientific-search-bar">
+                                <i class="fa-solid fa-search"></i>
+                                <input type="text" id="scientific-search-input" placeholder="Rechercher des publications (ex: cloud computing security, neural networks)...">
+                            </div>
+                            <button id="btn-trigger-scientific-search" class="btn btn-primary">
+                                <i class="fa-solid fa-magnifying-glass"></i> Rechercher
+                            </button>
+                        </div>
+
+                        <div class="scientific-search-status" id="scientific-search-status" style="display: none;">
+                            <i class="fa-solid fa-spinner fa-spin"></i> Interrogation de la base académique OpenAlex en cours...
+                        </div>
+
+                        <div class="scientific-results-viewport" id="scientific-results-container">
+                            <div class="search-placeholder-message text-center py-5">
+                                <i class="fa-solid fa-graduation-cap" style="font-size: 3.5rem; color: var(--accent-primary); opacity: 0.8; margin-bottom: var(--spacing-md); display: block;"></i>
+                                <h4 style="font-size: 1.25rem; font-family: var(--font-display); margin-bottom: var(--spacing-sm);">Recherche Scientifique Intégrée</h4>
+                                <p style="max-width: 600px; margin: 0 auto; color: var(--text-muted); font-size: 0.9rem; line-height: 1.5;">
+                                    Saisissez vos mots-clés ou le titre d'un article ci-dessus pour rechercher en temps réel parmi plus de 250 millions de thèses, revues et articles scientifiques indexés par OpenAlex. Vous pourrez ensuite les ajouter à vos références en un clic.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 5. TOOLBOX TAB -->
+                <section id="tab-toolbox" class="tab-panel">
+                    <div class="toolbox-grid">
+                        
+                        <!-- LaTeX Table Generator -->
+                        <div class="glass-panel card-wide">
+                            <h3><i class="fa-solid fa-table"></i> Générateur de Tableau LaTeX</h3>
+                            <p>Définissez votre tableau et générez le code LaTeX correspondant.</p>
+                            
+                            <div class="table-generator-inputs">
+                                <div class="form-row">
+                                    <div class="form-group flex-1">
+                                        <label for="latex-tbl-cols">Nombre de colonnes</label>
+                                        <input type="number" id="latex-tbl-cols" value="3" min="1" max="10">
+                                    </div>
+                                    <div class="form-group flex-1">
+                                        <label for="latex-tbl-rows">Nombre de lignes</label>
+                                        <input type="number" id="latex-tbl-rows" value="4" min="1" max="20">
+                                    </div>
+                                    <div class="form-group flex-2">
+                                        <label for="latex-tbl-caption">Légende du tableau</label>
+                                        <input type="text" id="latex-tbl-caption" placeholder="Ex: Comparatif des performances des bases de données">
+                                    </div>
+                                </div>
+                                <button id="btn-generate-grid" class="btn btn-secondary btn-sm mb-3">Générer la grille de saisie</button>
+                            </div>
+                            
+                            <div class="grid-editor-container" id="grid-editor-container">
+                                <!-- Dynamic grid generated here -->
+                            </div>
+
+                            <div class="latex-output-box mt-3" id="latex-table-output-container" style="display: none;">
+                                <h4>Code LaTeX Généré</h4>
+                                <pre><code class="language-latex" id="latex-table-code"></code></pre>
+                                <button id="btn-copy-latex-table" class="btn btn-primary btn-sm mt-2"><i class="fa-solid fa-copy"></i> Copier le code LaTeX</button>
+                            </div>
+                        </div>
+
+                        <!-- LaTeX Math & Figure Cheat Sheet -->
+                        <div class="glass-panel">
+                            <h3><i class="fa-solid fa-bezier-curve"></i> Snippets LaTeX Académiques</h3>
+                            <p>Modèles prêts à l'emploi à copier-coller dans votre document LaTeX.</p>
+                            
+                            <div class="snippet-list">
+                                <div class="snippet-item">
+                                    <h5>Intégrer une Figure</h5>
+                                    <pre><code>\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.8\textwidth]{images/mon-image.png}
+  \caption{Légende de la figure}
+  \label{fig:mon-image}
+\end{figure}</code></pre>
+                                    <button class="btn btn-xs btn-outline btn-copy-snippet"><i class="fa-solid fa-copy"></i> Copier</button>
+                                </div>
+
+                                <div class="snippet-item">
+                                    <h5>Équation Mathématique</h5>
+                                    <pre><code>\begin{equation}
+  f(x) = \sigma(W^T x + b) = \frac{1}{1 + e^{-(W^T x + b)}}
+  \label{eq:sigmoid}
+\end{equation}</code></pre>
+                                    <button class="btn btn-xs btn-outline btn-copy-snippet"><i class="fa-solid fa-copy"></i> Copier</button>
+                                </div>
+
+                                <div class="snippet-item">
+                                    <h5>Bloc de Code Source</h5>
+                                    <pre><code>\begin{lstlisting}[language=Python, caption=Mon script]
+def calculate_metrics(y_true, y_pred):
+    return accuracy_score(y_true, y_pred)
+\end{lstlisting}</code></pre>
+                                    <button class="btn btn-xs btn-outline btn-copy-snippet"><i class="fa-solid fa-copy"></i> Copier</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Document Export Module -->
+                        <div class="glass-panel">
+                            <h3><i class="fa-solid fa-file-export"></i> Exporter le Mémoire</h3>
+                            <p>Compilez et exportez tout le travail rédigé et structuré dans l'application.</p>
+                            
+                            <div class="export-options">
+                                <div class="export-card">
+                                    <div class="export-icon"><i class="fa-brands fa-markdown text-blue"></i></div>
+                                    <div class="export-desc">
+                                        <h5>Fichier Markdown (.md)</h5>
+                                        <p>Contient l'intégralité du plan, vos notes, votre glossaire et votre bibliographie fusionnés de manière structurée.</p>
+                                    </div>
+                                    <button id="btn-export-markdown" class="btn btn-primary btn-sm">Télécharger .md</button>
+                                </div>
+
+                                <div class="export-card mt-3">
+                                    <div class="export-icon"><i class="fa-solid fa-code text-purple"></i></div>
+                                    <div class="export-desc">
+                                        <h5>Fichier BibTeX (.bib)</h5>
+                                        <p>Génère l'intégralité de vos sources de bibliographie au format BibTeX standard, idéal pour votre fichier de bibliographie LaTeX.</p>
+                                    </div>
+                                    <button id="btn-export-bibtex" class="btn btn-primary btn-sm">Télécharger .bib</button>
+                                </div>
+                            </div>
+
+                            <div class="advice-card mt-3">
+                                <h4>💡 Note de conversion</h4>
+                                <p>Le fichier Markdown exporté peut être facilement converti en document Word (.docx) ou PDF de qualité professionnelle en utilisant un outil comme <strong>Pandoc</strong>.</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Modals -->
+    <!-- New Project Modal -->
+    <div class="modal" id="new-project-modal">
+        <div class="modal-content glass-panel">
+            <div class="modal-header">
+                <h3>Créer un nouveau projet de mémoire</h3>
+                <button class="modal-close" id="btn-close-new-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="new-project-form">
+                    <div class="form-group">
+                        <label for="new-project-name-input">Titre du Projet *</label>
+                        <input type="text" id="new-project-name-input" placeholder="Ex: Rapport de Projet de Fin d'Études" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="new-project-type">Modèle de structure de plan</label>
+                        <div class="select-wrapper">
+                            <select id="new-project-type">
+                                <option value="rd">Projet R&D / Développement logiciel</option>
+                                <option value="academic">Recherche Scientifique / Théorique</option>
+                                <option value="audit">Audit / Amélioration de Processus Industriels</option>
+                                <option value="empty">Structure vide (personnalisée)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="new-project-words">Objectif de mots</label>
+                            <input type="number" id="new-project-words" value="15000">
+                        </div>
+                        <div class="form-group">
+                            <label for="new-project-deadline">Date de rendu</label>
+                            <input type="date" id="new-project-deadline">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Créer le projet</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
