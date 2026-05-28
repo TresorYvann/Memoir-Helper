@@ -315,6 +315,171 @@ let state = {
     activeCitationStyle: 'ieee' // 'ieee' or 'apa'
 };
 
+let currentUser = null;
+
+function showLoginOverlay(message = '') {
+    const overlay = document.getElementById('auth-overlay');
+    const messageEl = document.getElementById('auth-message');
+    if (overlay) overlay.style.display = 'flex';
+    if (messageEl) {
+        messageEl.textContent = message;
+        messageEl.style.display = message ? 'block' : 'none';
+    }
+    const appContainer = document.querySelector('.app-container');
+    if (appContainer) appContainer.style.filter = 'blur(4px)';
+}
+
+function hideLoginOverlay() {
+    const overlay = document.getElementById('auth-overlay');
+    if (overlay) overlay.style.display = 'none';
+    const appContainer = document.querySelector('.app-container');
+    if (appContainer) appContainer.style.filter = 'none';
+}
+
+function updateUserBadge(username) {
+    const userBadge = document.getElementById('current-user-badge');
+    const logoutBtn = document.getElementById('btn-logout');
+    if (userBadge) {
+        userBadge.textContent = username ? `Utilisateur : ${username}` : '';
+        userBadge.style.display = username ? 'inline-flex' : 'none';
+    }
+    if (logoutBtn) {
+        logoutBtn.style.display = username ? 'inline-flex' : 'none';
+    }
+}
+
+async function callAuthApi(path, payload) {
+    const response = await fetch(path, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+    });
+    return response;
+}
+
+async function loginUser(username, password) {
+    try {
+        const response = await callAuthApi('/api/auth/login', { username, password });
+        const data = await response.json();
+        if (!response.ok) {
+            throw new Error(data.error || 'Erreur de connexion');
+        }
+        currentUser = data.username;
+        updateUserBadge(currentUser);
+        hideLoginOverlay();
+        await initializeAppAfterLogin();
+    } catch (err) {
+        showLoginOverlay(err.message);
+    }
+}
+
+async function registerUser(username, password, confirmPassword) {
+    if (password !== confirmPassword) {
+        showLoginOverlay('Les mots de passe ne correspondent pas.');
+        return;
+    }
+    try {
+        const response = await callAuthApi('/api/auth/register', { username, password });
+        const data = await response.json();
+        if (!response.ok) {
+            throw new Error(data.error || 'Erreur d\'inscription');
+        }
+        currentUser = data.username;
+        updateUserBadge(currentUser);
+        hideLoginOverlay();
+        await initializeAppAfterLogin();
+    } catch (err) {
+        showLoginOverlay(err.message);
+    }
+}
+
+async function logoutUser() {
+    try {
+        await fetch('/api/auth/logout', { method: 'POST' });
+    } catch (e) {
+        console.warn('Impossible de se déconnecter proprement', e);
+    }
+    currentUser = null;
+    updateUserBadge(null);
+    showLoginOverlay('Vous êtes déconnecté. Connectez-vous pour accéder à votre espace.');
+}
+
+async function checkAuthStatus() {
+    try {
+        const response = await fetch('/api/auth/status');
+        if (response.ok) {
+            const data = await response.json();
+            if (data.authenticated) {
+                currentUser = data.username;
+                updateUserBadge(currentUser);
+                return true;
+            }
+        }
+    } catch (e) {
+        console.warn('Impossible de vérifier l\'authentification :', e);
+    }
+    return false;
+}
+
+function initLoginForms() {
+    const loginTab = document.getElementById('auth-tab-login');
+    const registerTab = document.getElementById('auth-tab-register');
+    const loginForm = document.getElementById('login-auth-form');
+    const registerForm = document.getElementById('register-auth-form');
+    const authMessage = document.getElementById('auth-message');
+
+    function switchAuthTab(target) {
+        if (!loginForm || !registerForm || !loginTab || !registerTab) return;
+        if (target === 'login') {
+            loginForm.classList.add('auth-form-active');
+            registerForm.classList.remove('auth-form-active');
+            loginTab.classList.add('active');
+            registerTab.classList.remove('active');
+            authMessage.textContent = '';
+        } else {
+            loginForm.classList.remove('auth-form-active');
+            registerForm.classList.add('auth-form-active');
+            loginTab.classList.remove('active');
+            registerTab.classList.add('active');
+            authMessage.textContent = '';
+        }
+    }
+
+    if (loginTab) loginTab.addEventListener('click', () => switchAuthTab('login'));
+    if (registerTab) registerTab.addEventListener('click', () => switchAuthTab('register'));
+
+    if (loginForm) {
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const username = document.getElementById('auth-login-username').value.trim();
+            const password = document.getElementById('auth-login-password').value;
+            await loginUser(username, password);
+        });
+    }
+
+    if (registerForm) {
+        registerForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const username = document.getElementById('auth-register-username').value.trim();
+            const password = document.getElementById('auth-register-password').value;
+            const confirmPassword = document.getElementById('auth-register-password-confirm').value;
+            await registerUser(username, password, confirmPassword);
+        });
+    }
+
+    const logoutBtn = document.getElementById('btn-logout');
+    if (logoutBtn) logoutBtn.addEventListener('click', logoutUser);
+}
+
+async function initializeAppAfterLogin() {
+    await loadStateFromServer();
+    if (state.projects.length === 0) {
+        createDefaultProject();
+    }
+    renderProjectSelector();
+    loadActiveProject();
+}
+
 // Pomodoro Timer State
 let pomoTimer = {
     intervalId: null,
@@ -327,19 +492,20 @@ let pomoTimer = {
 // 3. Initialisation de l'application
 // ==========================================================================
 document.addEventListener('DOMContentLoaded', async () => {
-    await loadStateFromServer();
     initTheme();
+    initLoginForms();
     initRouting();
     initEventListeners();
     initTableGenerator();
-    
-    // Si aucun projet n'existe, on ouvre le modal de création de projet
-    if (state.projects.length === 0) {
-        createDefaultProject();
+
+    const authenticated = await checkAuthStatus();
+    if (!authenticated) {
+        showLoginOverlay('Connectez-vous ou créez un compte pour accéder à votre espace.');
+        return;
     }
-    
-    renderProjectSelector();
-    loadActiveProject();
+
+    await initializeAppAfterLogin();
+    hideLoginOverlay();
 });
 
 // Charger l'état depuis le serveur local (avec repli sur localStorage)

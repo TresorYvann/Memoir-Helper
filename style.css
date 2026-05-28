@@ -518,6 +518,113 @@ input, textarea, select {
     }
 }
 
+/* Auth Overlay */
+.auth-overlay {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(10, 15, 30, 0.88);
+    z-index: 100;
+    padding: var(--spacing-xl);
+}
+
+.auth-card {
+    width: min(520px, 100%);
+    background: rgba(17, 24, 39, 0.96);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    padding: var(--spacing-xl);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+.auth-header h2 {
+    font-size: 1.8rem;
+    margin-bottom: var(--spacing-xs);
+}
+
+.auth-header p {
+    color: var(--text-muted);
+    line-height: 1.6;
+}
+
+.auth-tabs {
+    display: flex;
+    gap: var(--spacing-sm);
+    margin-top: var(--spacing-md);
+}
+
+.auth-tab {
+    flex: 1;
+    border: 1px solid var(--border-color);
+    background: transparent;
+    color: var(--text-main);
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: background var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast);
+}
+
+.auth-tab.active,
+.auth-tab:hover {
+    background: var(--bg-hover);
+    border-color: var(--accent-primary);
+    color: var(--text-main);
+}
+
+.auth-form {
+    display: none;
+    margin-top: var(--spacing-md);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+.auth-form.auth-form-active {
+    display: flex;
+}
+
+.auth-form label {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+.auth-form input {
+    width: 100%;
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-color);
+    background: var(--bg-panel-solid);
+    color: var(--text-main);
+    outline: none;
+    transition: border-color var(--transition-fast);
+}
+
+.auth-form input:focus {
+    border-color: var(--border-color-focus);
+}
+
+.auth-message {
+    display: none;
+    color: var(--accent-warning);
+    font-size: 0.95rem;
+    min-height: 1.2rem;
+}
+
+.user-badge {
+    display: none;
+    padding: 0.55rem 0.9rem;
+    border-radius: var(--radius-pill);
+    background: rgba(99, 102, 241, 0.15);
+    color: var(--text-main);
+    font-size: 0.85rem;
+    border: 1px solid rgba(99, 102, 241, 0.25);
+}
+
 /* Glass Panels */
 .glass-panel {
     background: var(--bg-panel);

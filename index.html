@@ -16,6 +16,38 @@
     <script src="app.js" defer></script>
 </head>
 <body class="dark-theme">
+    <div id="auth-overlay" class="auth-overlay" aria-live="polite">
+        <div class="auth-card">
+            <div class="auth-header">
+                <h2>Mémoire Helper</h2>
+                <p>Connectez-vous pour accéder à votre espace personnel et sauvegarder votre mémoire.</p>
+            </div>
+            <div class="auth-tabs">
+                <button id="auth-tab-login" class="auth-tab active" type="button">Connexion</button>
+                <button id="auth-tab-register" class="auth-tab" type="button">Inscription</button>
+            </div>
+            <div id="auth-message" class="auth-message"></div>
+
+            <form id="login-auth-form" class="auth-form auth-form-active">
+                <label for="auth-login-username">Nom d'utilisateur</label>
+                <input id="auth-login-username" type="text" autocomplete="username" required>
+                <label for="auth-login-password">Mot de passe</label>
+                <input id="auth-login-password" type="password" autocomplete="current-password" required>
+                <button type="submit" class="btn btn-primary btn-block">Se connecter</button>
+            </form>
+
+            <form id="register-auth-form" class="auth-form">
+                <label for="auth-register-username">Nom d'utilisateur</label>
+                <input id="auth-register-username" type="text" autocomplete="username" required>
+                <label for="auth-register-password">Mot de passe</label>
+                <input id="auth-register-password" type="password" autocomplete="new-password" required>
+                <label for="auth-register-password-confirm">Confirmer le mot de passe</label>
+                <input id="auth-register-password-confirm" type="password" autocomplete="new-password" required>
+                <button type="submit" class="btn btn-primary btn-block">Créer un compte</button>
+            </form>
+        </div>
+    </div>
+
     <div class="app-container">
         
         <!-- Sidebar Navigation -->
@@ -114,6 +146,10 @@
                         <span id="pomo-time">25:00</span>
                         <button id="btn-pomo-play" class="btn-icon" title="Démarrer focus"><i class="fa-solid fa-play"></i></button>
                     </div>
+                    <span id="current-user-badge" class="user-badge"></span>
+                    <button id="btn-logout" class="btn btn-danger-outline btn-icon" title="Déconnexion" style="display:none;">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                    </button>
                     <button id="theme-toggle" class="btn-icon" title="Changer le thème">
                         <i class="fa-solid fa-sun icon-sun"></i>
                         <i class="fa-solid fa-moon icon-moon"></i>
