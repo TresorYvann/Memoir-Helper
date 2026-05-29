@@ -1698,6 +1698,131 @@ tr:hover td {
 .mt-3 { margin-top: var(--spacing-lg); }
 .mb-3 { margin-bottom: var(--spacing-lg); }
 .flex-1 { flex: 1; }
+
+/* ==========================================================================
+   Responsive Adjustments
+   ========================================================================== */
+@media (max-width: 1200px) {
+    .sidebar {
+        width: 100%;
+        position: relative;
+        height: auto;
+        border-right: none;
+        border-bottom: 1px solid var(--border-color);
+    }
+    .main-content {
+        height: auto;
+    }
+    .top-bar {
+        padding: var(--spacing-lg) var(--spacing-md);
+    }
+    .top-bar-actions {
+        flex-wrap: wrap;
+        gap: var(--spacing-md);
+    }
+    .project-actions {
+        flex-wrap: wrap;
+    }
+    .project-actions .btn {
+        flex: 1 1 48%;
+    }
+    .sidebar-nav ul {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: var(--spacing-sm);
+    }
+}
+
+@media (max-width: 1024px) {
+    .app-container,
+    .workspace-layout,
+    .dual-layout {
+        flex-direction: column;
+        display: flex;
+    }
+    .workspace-layout,
+    .dual-layout {
+        grid-template-columns: 1fr;
+        height: auto;
+    }
+    .sidebar {
+        padding: var(--spacing-lg);
+    }
+    .dashboard-details,
+    .toolbox-grid {
+        grid-template-columns: 1fr;
+    }
+    .card-wide {
+        grid-column: span 1;
+    }
+    .stats-grid {
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    }
+    .sidebar-nav ul {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .app-container {
+        flex-direction: column;
+    }
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+        padding: var(--spacing-lg);
+        border-right: none;
+        border-bottom: 1px solid var(--border-color);
+    }
+    .main-content,
+    .workspace-layout,
+    .dual-layout {
+        height: auto;
+    }
+    .workspace-layout,
+    .dual-layout,
+    .dashboard-details,
+    .toolbox-grid {
+        grid-template-columns: 1fr;
+    }
+    .top-bar {
+        flex-direction: column;
+        align-items: stretch;
+        gap: var(--spacing-md);
+    }
+    .top-bar-actions {
+        justify-content: space-between;
+        width: 100%;
+    }
+    .top-bar-actions .btn-icon,
+    .top-bar-actions .user-badge {
+        flex: 1 1 auto;
+        min-width: 0;
+    }
+    .sidebar-nav ul {
+        grid-template-columns: 1fr;
+    }
+    .project-actions {
+        flex-direction: column;
+    }
+    .project-actions .btn {
+        width: 100%;
+    }
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+    .reminder-card {
+        margin-bottom: var(--spacing-lg);
+    }
+    .search-bar,
+    .search-bar input,
+    .auth-card,
+    .modal-content {
+        width: 100%;
+        max-width: 100%;
+    }
+}
 .flex-2 { flex: 2; }
 .flex-row { display: flex; }
 
