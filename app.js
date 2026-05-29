@@ -1302,12 +1302,59 @@ function updateDashboardStats() {
         daysLeftEl.textContent = "--";
         daysLeftEl.style.color = 'var(--text-muted)';
         deadlineDateEl.textContent = "Date limite : non configurée";
+        updateDeadlineReminder(null);
     }
 
     // 4. Références & Sigles
     const refCount = activeProj.references ? activeProj.references.length : 0;
     const acroCount = activeProj.acronyms ? activeProj.acronyms.length : 0;
     document.getElementById('stat-ref-glo').textContent = `${refCount} Réf / ${acroCount} Sigles`;
+
+    if (activeProj.deadline) {
+        const target = new Date(activeProj.deadline);
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        target.setHours(0, 0, 0, 0);
+        const diffTime = target.getTime() - today.getTime();
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        updateDeadlineReminder(diffDays);
+    }
+
+    function updateDeadlineReminder(diffDays) {
+        const reminder = document.getElementById('deadline-reminder');
+        const reminderText = document.getElementById('deadline-reminder-text');
+        if (!reminder || !reminderText) return;
+
+        reminder.classList.remove('urgent', 'warning', 'info');
+
+        if (diffDays === null) {
+            reminder.style.display = 'none';
+            reminderText.textContent = '';
+            return;
+        }
+
+        if (diffDays < 0) {
+            reminder.style.display = 'block';
+            reminder.classList.add('urgent');
+            reminderText.textContent = 'La date de rendu est dépassée. Priorise immédiatement la rédaction et relance ton planning pour rattraper le retard.';
+        } else if (diffDays === 0) {
+            reminder.style.display = 'block';
+            reminder.classList.add('urgent');
+            reminderText.textContent = 'C’est le dernier jour pour rendre ton mémoire. Concentre-toi sur la finalisation et l’envoi aujourd’hui.';
+        } else if (diffDays <= 7) {
+            reminder.style.display = 'block';
+            reminder.classList.add('warning');
+            reminderText.textContent = `Il reste ${diffDays} jour${diffDays > 1 ? 's' : ''} avant la deadline. Avance chaque jour et vérifie tes sections clés.`;
+        } else if (diffDays <= 14) {
+            reminder.style.display = 'block';
+            reminder.classList.add('info');
+            reminderText.textContent = `Il reste ${diffDays} jours avant la date de rendu. Planifie des sessions courtes et régulières pour ne pas tout laisser à la dernière minute.`;
+        } else {
+            reminder.style.display = 'none';
+            reminderText.textContent = '';
+        }
+    }
+
 
     // 5. Générer le diagramme de Gantt horizontal des jalons
     renderGanttChart(activeProj.sections);
