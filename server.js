@@ -151,13 +151,14 @@ const server = http.createServer((req, res) => {
         return parseJSONBody(req, (err, body) => {
             if (err) return sendJSON(res, 400, { error: 'Format JSON invalide' });
 
-            const username = String((body.username || '').trim()).toLowerCase();
+            const rawUsername = String((body.username || '').trim());
+            const username = rawUsername.normalize('NFC').toLowerCase();
             const password = String(body.password || '');
 
-            if (!username || !password) {
+            if (!rawUsername || !password) {
                 return sendJSON(res, 400, { error: 'Nom d\'utilisateur et mot de passe requis' });
             }
-            if (!/^[a-zA-Z0-9._-]{3,32}$/.test(username)) {
+            if (!/^[\p{L}\p{N}._-]{3,32}$/u.test(rawUsername)) {
                 return sendJSON(res, 400, { error: 'Nom d\'utilisateur invalide' });
             }
             if (password.length < 6) {
@@ -194,10 +195,11 @@ const server = http.createServer((req, res) => {
         return parseJSONBody(req, (err, body) => {
             if (err) return sendJSON(res, 400, { error: 'Format JSON invalide' });
 
-            const username = String((body.username || '').trim()).toLowerCase();
+            const rawUsername = String((body.username || '').trim());
+            const username = rawUsername.normalize('NFC').toLowerCase();
             const password = String(body.password || '');
 
-            if (!username || !password) {
+            if (!rawUsername || !password) {
                 return sendJSON(res, 400, { error: 'Nom d\'utilisateur et mot de passe requis' });
             }
 
