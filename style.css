@@ -1899,12 +1899,25 @@ tr:hover td {
     }
     .top-bar-actions {
         gap: var(--spacing-md);
+        flex-wrap: wrap;
     }
     .sidebar {
         width: 100%;
+        position: relative;
+        height: auto;
     }
     .sidebar-footer {
         gap: var(--spacing-sm);
+    }
+    .project-actions {
+        flex-wrap: wrap;
+    }
+    .project-actions .btn {
+        width: auto;
+        flex: 1 1 48%;
+    }
+    .tab-viewport {
+        padding: var(--spacing-lg);
     }
 }
 
@@ -1935,8 +1948,20 @@ tr:hover td {
     .nav-item {
         margin-bottom: 0;
     }
+    .nav-item a {
+        padding: calc(var(--spacing-md) * 0.85);
+    }
     .sidebar {
         padding: var(--spacing-lg);
+    }
+    .stats-grid {
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    }
+    .dashboard-details {
+        gap: var(--spacing-md);
+    }
+    .top-bar-actions {
+        justify-content: space-between;
     }
 }
 
@@ -1949,6 +1974,8 @@ tr:hover td {
         height: auto;
         position: relative;
         padding: var(--spacing-lg);
+        border-right: none;
+        border-bottom: 1px solid var(--border-color);
     }
     .main-content {
         height: auto;
@@ -1990,6 +2017,19 @@ tr:hover td {
     }
     .project-actions .btn {
         width: 100%;
+    }
+    .project-subtitle {
+        font-size: 0.8rem;
+    }
+    .top-bar-actions .btn-icon {
+        width: 48px;
+        height: 48px;
+    }
+    .reminder-card {
+        margin-bottom: var(--spacing-lg);
+    }
+    .save-status {
+        text-align: center;
     }
 }
 
